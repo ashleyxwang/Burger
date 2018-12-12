@@ -1,14 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    {{!-- {{{body}}}  --}}
+<style>
+    li {
+        max-width: 14rem;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+    }
+</style>
 
-    <button>SUBMIT</button>
-</body>
-</html>
+<h1>Burgersss</h1>
+
+<h2>Burgers from da king</h2>
+<ol>
+    {{#each orderHistory}}
+    {{#unless devoured}}
+    <li>
+        <p>{{burger_name}}</p>
+        <button class='nomnom' data-burgId="{{id}}">NOMNOM</button>
+    </li>
+    {{/unless}}
+    {{/each}}
+</ol>
+
+<h2>i nomnom'd deez burgs</h2>
+<ol>
+    {{#each orderHistory}}
+    {{#if devoured}}
+    <li>{{burger_name}}</li>
+    {{/if}}
+    {{/each}}
+</ol>
+
+<form>
+    <input id='peasantOrder' type='text'>
+    <button id='submit' type='submit'>SUBMIT</button>
+</form>
+
+<script>
+    $('#peasantOrder').focus();
+
+    $('.nomnom').on('click', function (nomBurg) {
+        console.log("i 8");
+        let burgerID = $(this).data("burgId".toLowerCase());
+
+        $.ajax("/peasant/devour/" + burgerID, {
+            type: "PUT",
+        })
+            .then(() => {
+                console.log("peaseant.. devour everything!!!");
+                location.reload();
+            });
+    });
+
+    $('#submit').on("click", peasantReq => {
+        peasantReq.preventDefault();
+        //TODO: validation empty stuff
+        const burgerObject = {
+            burger_name: $('#peasantOrder').val()
+        };
+
+        $.post("/api/guardRecord", burgerObject, _ => {
+            console.log("req fullfilled")
+            location.reload();
+        });
+    });
+</script>
