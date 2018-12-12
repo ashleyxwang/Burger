@@ -39,27 +39,29 @@
     $('#peasantOrder').focus();
 
     $('.nomnom').on('click', function (nomBurg) {
-        console.log("i 8");
         let burgerID = $(this).data("burgId".toLowerCase());
 
         $.ajax("/peasant/devour/" + burgerID, {
             type: "PUT",
         })
             .then(() => {
-                console.log("peaseant.. devour everything!!!");
                 location.reload();
             });
     });
 
     $('#submit').on("click", peasantReq => {
         peasantReq.preventDefault();
-        //TODO: validation empty stuff
-        const burgerObject = {
-            burger_name: $('#peasantOrder').val()
-        };
 
+        const burgerOrder = $('#peasantOrder').val();
+        if (!burgerOrder) {
+            alert("type something in the box :|")
+            return
+        }
+
+        const burgerObject = {
+            burger_name: burgerOrder
+        };
         $.post("/api/guardRecord", burgerObject, _ => {
-            console.log("req fullfilled")
             location.reload();
         });
     });
