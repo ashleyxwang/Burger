@@ -2,35 +2,22 @@ const orm = require("../config/orm.js");
 
 //call ORM functions using burger specific input
 const burger = {
-  selectAll: function (guardDesire) {
-    orm.selectAll("burgers", function (chefTicket) {
-      guardDesire(chefTicket);
-    });
-  },
+    selectAll: function (guardDesire) {
+        orm.selectAll("burgers", guardDesire);
+    },
 
-  insertOne: function (guardReq, guardDesire) {
-    // { burger_name: "name of burger" }
-    orm.insertOne("burgers", guardReq, function (res) {
-      console.log("chefs desire fulfilled:", res);
-      guardDesire(res);
-    });
-  },
+    insertOne: function (guardReq, guardDesire) {
+        orm.insertOne("burgers", guardReq, guardDesire);
+    },
 
-  updateOne: function (guardReq, guardDesire) {
-    // { id: 123 }
-    console.log("nomnomonomononononomommom", guardReq);
+    updateOne: function (guardReq, guardDesire) {
+        const guardParams = {
+            set: { devoured: true },
+            where: guardReq
+        }
 
-    const guardParams = {
-      set: { devoured: true },
-      where: guardReq
+        orm.updateOne("burgers", guardParams, guardDesire);
     }
-
-    orm.updateOne("burgers", guardParams, function (res) {
-      console.log("chef's update desire fulfilled:", res);
-      guardDesire(res);
-    });
-  }
 };
-
 
 module.exports = burger;
