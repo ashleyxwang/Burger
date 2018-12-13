@@ -1,11 +1,12 @@
 // Set up MySQL connection.
 var mysql = require("mysql");
+let keys = require("../keys")
 
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
-  user: "root",
-  password: "Nathanwang03/13",
+  user: keys.mysql.user,
+  password: keys.mysql.pass,
   database: "burgers_db"
 });
 

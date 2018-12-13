@@ -14,7 +14,7 @@ const burger = {
         const guardParams = {
             set: { devoured: true },
             where: guardReq
-        }
+        };
 
         orm.updateOne("burgers", guardParams, guardDesire);
     }
