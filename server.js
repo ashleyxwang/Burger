@@ -16,3 +16,7 @@ app.use(routes);
 app.listen(PORT, () => {
     console.log(`App listening on http://localhost:${PORT}`);
 });
+
+app.get("/", function(req, res) {
+    res.json(path.join(__dirname, "public/index.html"));
+  });
